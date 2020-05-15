@@ -12,7 +12,7 @@ public class User {
     private Long id;
 
 
-    @NotNull(message = "Product name is required.")
+    @NotNull(message = "User name is required.")
     @Basic(optional = false)
     private String name;
 
@@ -20,8 +20,7 @@ public class User {
     @OneToMany
     private List<Order> orders = new ArrayList<>();
 
-    public User(Long id, @NotNull(message = "Username required") String name){
-        this.id = id;
+    public User(@NotNull(message = "Username required") String name){
         this.name = name;
     }
 

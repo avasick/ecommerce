@@ -37,6 +37,13 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(DuplicateUserNameException.class)
+    public ResponseEntity<ErrorItem> handle(DuplicateUserNameException e) {
+        ErrorItem error = new ErrorItem();
+        error.setMessage(e.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.ALREADY_REPORTED);
+    }
     public static class ErrorItem {
 
         @JsonInclude(JsonInclude.Include.NON_NULL) private String code;

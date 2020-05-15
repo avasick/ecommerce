@@ -57,6 +57,7 @@ public class OrderController {
         }
 
         order.setOrderProducts(orderProducts);
+        order.setUserId(form.userId);
 
         this.orderService.update(order);
 
@@ -88,6 +89,8 @@ public class OrderController {
 
         private List<OrderProductDto> productOrders;
 
+        private Long userId;
+
         public List<OrderProductDto> getProductOrders() {
             return productOrders;
         }
@@ -95,5 +98,9 @@ public class OrderController {
         public void setProductOrders(List<OrderProductDto> productOrders) {
             this.productOrders = productOrders;
         }
+
+        public Long getUserId(){ return userId; }
+
+        public void setUserId(Long userId){ this.userId = userId; }
     }
 }

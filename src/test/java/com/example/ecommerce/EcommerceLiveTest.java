@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.ecommerce.controller.UserController;
+import com.example.ecommerce.dto.UserNameDto;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -53,6 +55,8 @@ public class EcommerceLiveTest {
     @Autowired private ProductController productController;
 
     @Autowired private OrderController orderController;
+
+    @Autowired private UserController userController;
 
     private Order createRandomOrder() {
         ArrayList <Product> products = new ArrayList<>();
@@ -106,6 +110,9 @@ public class EcommerceLiveTest {
         Assertions
                 .assertThat(orderController)
                 .isNotNull();
+        Assertions
+                .assertThat(userController)
+                .isNotNull();
     }
 
     @Test
@@ -147,6 +154,21 @@ public class EcommerceLiveTest {
 
         assertThat(order, hasProperty("status", is("PAID")));
         assertThat(order.getOrderProducts(), hasItem(hasProperty("quantity", is(2))));
+        assertThat(order, hasProperty("userId", is(1L)));
+    }
+
+    @Test
+    public void givenPostUser_whenBodyRequestMatcherJson_thenResponseContainsEqualUserProperties() {
+        UserNameDto userName = new UserNameDto();
+        userName.setName("TestName");
+        assertThat(userName, hasProperty("name", is("TestName")));
+        final ResponseEntity<User> postResponse = restTemplate.postForEntity("http://localhost:" + port + "/api/user", userName, User.class);
+        User user = postResponse.getBody();
+        Assertions
+                .assertThat(postResponse.getStatusCode())
+                .isEqualByComparingTo(HttpStatus.CREATED);
+
+        assertThat(user, hasProperty("name", is("TestName")));
     }
 
     private OrderController.OrderForm prepareOrderForm() {
@@ -155,6 +177,7 @@ public class EcommerceLiveTest {
         productDto.setProduct(new Product(1L, "TV Set", 300.00, "http://placehold.it/200x100"));
         productDto.setQuantity(2);
         orderForm.setProductOrders(Collections.singletonList(productDto));
+        orderForm.setUserId(1L);
 
         return orderForm;
     }

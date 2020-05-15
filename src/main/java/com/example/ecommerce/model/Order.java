@@ -24,6 +24,8 @@ public class Order {
 
     private String status;
 
+    private Long userId;
+
     @OneToMany(mappedBy = "pk.order")
     @Valid
     private List<OrderProduct> orderProducts = new ArrayList<>();
@@ -61,6 +63,14 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Long getUserId(){
+        return userId;
+    }
+
+    public void setUserId(Long userId){
+        this.userId = userId;
     }
 
     public List<OrderProduct> getOrderProducts() {
